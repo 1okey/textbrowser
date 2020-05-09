@@ -14,7 +14,7 @@
 
 ### Test
 ```bash
-    TODO
+	pytest .
 ```
 
 ### Run
