@@ -21,3 +21,7 @@
 ```bash
 	python3 ./src/main.py
 ```
+
+### TODO:
+- [ ] better test coverate
+- [ ] better package handling
