@@ -23,5 +23,5 @@
 ```
 
 ### TODO:
-- [ ] better test coverate
+- [ ] better test coverage
 - [ ] better package handling
