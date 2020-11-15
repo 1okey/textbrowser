@@ -21,8 +21,7 @@ BrowserArgParser.add_argument(
 )
 
 
-if __name__ == '__main__':
-    args = BrowserArgParser.parse_args()
-    config = BrowserConfig(args)
-    browser = TextBrowser(config)
-    browser.run()
+args = BrowserArgParser.parse_args()
+config = BrowserConfig(args)
+browser = TextBrowser(config)
+browser.run()

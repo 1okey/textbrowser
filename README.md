@@ -1,27 +1,24 @@
-### Prerequisites
-- setuptools
-- wheel
-- python3
-- python3-venv
+## Textbrowser
 
-### Setup
-
+### Setting up
 ```bash
-	python3 -m venv venv
-	source ./venv/bin/activate
-	pip install -r ./requirements.txt
-```
+    python3 -m venv venv
 
-### Test
+    # linux/macoss
+    source ./venv/bin/activate
+    # windows
+    venv\Scripts\activate.bat
+
+    pip3 install -r ./requirements.txt
+```
+### Running
+```bash
+	python3 -m textbrowser
+```
+### Testing
 ```bash
 	pytest .
 ```
 
-### Run
-```bash
-	python3 ./src/main.py
-```
-
-### TODO:
+### TODO
 - [ ] better test coverage
-- [ ] better package handling
