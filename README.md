@@ -1,10 +1,24 @@
 ## Textbrowser
----
-To run textbrowser use:
+
+### Setting up
 ```bash
-browser.sh help
+    python3 -m venv venv
+
+    # linux/macoss
+    source ./venv/bin/activate
+    # windows
+    venv\Scripts\activate.bat
+
+    pip3 install -r ./requirements.txt
 ```
----
-### TODO:
+### Running
+```bash
+	python3 -m textbrowser
+```
+### Testing
+```bash
+	pytest .
+```
+
+### TODO
 - [ ] better test coverage
-- [ ] better package handling
