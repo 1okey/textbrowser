@@ -1,6 +1,6 @@
 from textbrowser.browser import TextBrowser
-from textbrowser.config import BrowserConfig
-from textbrowser.main import BrowserArgParser
+from textbrowser.cache import BrowserCache
+from textbrowser.argparser import BrowserArgParser
 from textbrowser.utils import InvalidQueryException
 
 import pytest
@@ -8,15 +8,14 @@ import pytest
 @pytest.fixture
 def browser():
     args = BrowserArgParser.parse_args()
-    return TextBrowser(BrowserConfig(args))
+    return TextBrowser(BrowserCache(args))
 
 
 @pytest.fixture
-def config():
+def cache():
     args = BrowserArgParser.parse_args()
-    return BrowserConfig(args)
+    return BrowserCache(args)
 
-    
 
 VALID_DOMAINS = [
     ('https://google.com', ('https://', 'google', 'com')),
@@ -42,9 +41,14 @@ def test_invalid_domains(browser):
             browser.parse_query(domain)
 
 
-def test_config(config):
-    assert config.cache_dir == './.cache'
-    assert config.cache_size == 20
+def test_cache(cache):
+    assert cache.cache_dir == './.cache'
+    assert cache.cache_size == 20
+
+
+def test_caching(cache):
+    assert cache.cache_dir == './.cache'
+    assert cache.cache_size == 20
 
 
 def test_requests(browser):

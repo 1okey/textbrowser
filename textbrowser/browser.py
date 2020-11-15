@@ -17,11 +17,11 @@ class TextBrowser:
     REGEX = r'(https?:\/\/)?([-0-9a-z.]+[.]?){1,2}\.([a-z]{2,3})'
     COMMANDS = ('back', 'clean', 'exit')
 
-    def __init__(self, config):
+    def __init__(self, cache):
         logger.add(stderr, format="{time} {level} {message}", filter="TextBrowser", level="INFO")
 
         colorama_init()
-        self.config = config
+        self.cache = cache
         self.queue = []
 
     def handle_command(self, command):
@@ -40,7 +40,7 @@ class TextBrowser:
                 print('Request queue is empty, skipping')
         elif command == 'clean':
             logger.debug('User cleared browser cache')
-            clear_cache(self.config.cache_dir)
+            clear_cache(self.cache.cache_dir)
 
     def handle_request(self, query):
         self.queue.append(query)
@@ -87,7 +87,7 @@ class TextBrowser:
         return page_content
 
     def get_site(self, protocol, name, domain):
-        file_path = f'{self.config.cache_dir}/{name}.{domain}.txt'
+        file_path = f'{self.cache.cache_dir}/{name}.{domain}.txt'
         logger.debug(f'Requesting {name}.{domain}')
         if path.exists(file_path):
             logger.debug(f'Found in cache')
