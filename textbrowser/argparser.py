@@ -14,6 +14,6 @@ BrowserArgParser.add_argument(
     '-cache-size',
     dest='cache_size',
     type=int, 
-    default=20, 
+    default=10, 
     help='Ammount of pages to be saved into cache directory'
 )

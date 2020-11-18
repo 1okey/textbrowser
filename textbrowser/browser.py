@@ -8,7 +8,6 @@ from bs4 import BeautifulSoup
 from colorama import init as colorama_init, Fore
 from loguru import logger
 
-from textbrowser.utils import clear_cache
 from textbrowser.utils import InvalidQueryException, InvalidRequestError
 
 
@@ -39,8 +38,7 @@ class TextBrowser:
                 logger.debug('User requested last command from empty queue')
                 print('Request queue is empty, skipping')
         elif command == 'clean':
-            logger.debug('User cleared browser cache')
-            clear_cache(self.cache.cache_dir)
+            self.cache.clear()
 
     def handle_request(self, query):
         self.queue.append(query)
@@ -53,8 +51,6 @@ class TextBrowser:
             logger.debug(f'InvalidQueryException: {e.message}')
         except InvalidRequestError as e:
             logger.debug(f'InvalidRequestError: {e.message}')
-        finally:
-            print(f'"{query}" is not a valid request')
 
     def parse_query(self, query):
         domain_match = match(TextBrowser.REGEX, query)
@@ -68,7 +64,7 @@ class TextBrowser:
         return protocol, name, domain
 
     def scrape_response(self, response):
-        logger.debug('Scrapping received response...')
+        logger.debug('Scrapping received response')
         soup = BeautifulSoup(response.content, 'html.parser')
         found_elems = soup.find_all(TextBrowser.TAGS, recursive=True)
         page_content = ''
@@ -87,19 +83,18 @@ class TextBrowser:
         return page_content
 
     def get_site(self, protocol, name, domain):
-        file_path = f'{self.cache.cache_dir}/{name}.{domain}.txt'
+        file_name = f'{name}.{domain}'
         logger.debug(f'Requesting {name}.{domain}')
-        if path.exists(file_path):
-            logger.debug(f'Found in cache')
-            with open(file_path, 'r', encoding='utf-8') as cached_site:
-                print(*cached_site.readlines())
+        if self.cache.has(file_name):
+            print(self.cache.get_cached_site(file_name))
         elif name and domain:
             logger.debug(f'Getting {name}.{domain}...')
             try:
+                logger.debug(f'Starting scraping')
                 site_content = self.scrape_response(get(f'{protocol}{name}.{domain}'))
-                with open(file_path, 'w', encoding='utf-8') as file:
-                    file.write(site_content)
-                    logger.debug(f'Saving response into {file_path}')
+                logger.debug(f'Saving file')
+                
+                self.cache.save(file_name, site_content)
                 print(site_content)
 
             except ConnectionError:
