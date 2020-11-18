@@ -13,7 +13,7 @@ def browser():
 
 @pytest.fixture
 def cache():
-    args = BrowserArgParser.parse_args()
+    args = BrowserArgParser.parse_args('--foo 1'.split())
     return BrowserCache(args)
 
 
@@ -30,26 +30,13 @@ INVALID_DOMAINS = [
 ]
 
 def test_valid_domains(browser):
-    # mock class
     for domain, expected in VALID_DOMAINS:
         assert expected == tuple(browser.parse_query(domain))
 
 def test_invalid_domains(browser):
-    # mock class
     for domain in INVALID_DOMAINS:
         with pytest.raises(InvalidQueryException):
             browser.parse_query(domain)
-
-
-def test_cache(cache):
-    assert cache.cache_dir == './.cache'
-    assert cache.cache_size == 20
-
-
-def test_caching(cache):
-    assert cache.cache_dir == './.cache'
-    assert cache.cache_size == 20
-
 
 def test_requests(browser):
     pass

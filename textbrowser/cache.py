@@ -20,14 +20,20 @@ class BrowserCache:
         self.queue = []
 
     def set_cache_size(self, new_size):
-        if new_size > self.cache_size:
+        if new_size > self.cache_size or new_size <= self.cache_size and len(self.queue) <= new_size:
             self.cache_size = new_size 
+        elif len(self.queue) > new_size:
+            while len(self.queue) - new_size != 0:
+                self.remove(self.queue[0])
+
 
     def clear(self):
         logger.debug('User cleared browser cache')
 
         for file in listdir(self.cache_dir):
             remove(f'{self.cache_dir}/{file}')
+
+        self.queue.clear()
 
     def save(self, file_name, content):
         if self.cache_size == len(self.queue):
@@ -51,9 +57,13 @@ class BrowserCache:
             print(*cached_site.readlines())
 
     def remove(self, file_name):
-        remove(f'{self.cache_dir}/{file_name}.txt')
+        if self.has(file_name):
+            remove(f'{self.cache_dir}/{file_name}.txt')
 
     def has(self, file_name):
         logger.debug(f'Found in cache')
 
         return path.exists(f'{self.cache_dir}/{file_name}.txt')
+
+    def is_empty(self):
+        return len(self.queue) == 0
