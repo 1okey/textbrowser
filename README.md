@@ -19,6 +19,3 @@
 ```bash
 	pytest .
 ```
-
-### TODO
-- [ ] better test coverage
