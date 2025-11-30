@@ -1,9 +1,3 @@
-__pycache__
-pyvenv.cfg
-.vscode
-.cache
-.pytest_cache
-
-# virtual environments for win and linux
-wenv
-lenv
+build
+.venv
+*.o
